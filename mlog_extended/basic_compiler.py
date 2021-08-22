@@ -13,7 +13,6 @@ class BasicCompiler:
     """Basic compiler, supports xjump instruction."""
     def __init__(self):
         self.external_instructions = {}
-        pass
 
     def add_instruction(self, instruction: str, handler: InstructionHandler):
         if instruction.startswith(":"):
@@ -23,7 +22,7 @@ class BasicCompiler:
     def compile(self, src_text: str, sep='\n') -> str:
         code_lines = src_text.splitlines()
         code_lines = self.convert_externals(code_lines)
-        code_lines = self.convert_xjump_and_tags(code_lines)
+        code_lines = convert_xjump_and_tags(code_lines)
         return sep.join(code_lines) + sep
 
     def convert_externals(self, src_lines: list[str]) -> list[str]:
@@ -45,44 +44,39 @@ class BasicCompiler:
                 pass
         return dst_lines
 
+def convert_xjump_and_tags(src_lines: list[str]) -> list[str]:
+    (phase1_lines, dst_tagged) = parse_tags(src_lines)
+    dst_lines = []
 
-    def convert_xjump_and_tags(self, src_lines: list[str]) -> list[str]:
-        (phase1_lines, dst_tagged) = ParseTags(src_lines)
-        dst_lines = []
+    for (src_cursor, src_line) in enumerate(phase1_lines):
+        try:
+            verdicts = src_line.split()
+            if verdicts[0] == "xjump":
+                tag_name = verdicts[1]
+                real_destination = dst_tagged[tag_name]
 
-        for (src_cursor, src_line) in enumerate(phase1_lines):
-            try:
-                verdicts = src_line.split()
-                if verdicts[0] == "xjump":
-                    tag_name = verdicts[1]
-                    real_destination = dst_tagged[tag_name]
+                # Mindustry logic instruction
+                verdicts[0] = "jump"
+                verdicts[1] = str(real_destination)
 
-                    # Mindustry logic instruction
-                    verdicts[0] = "jump"
-                    verdicts[1] = str(real_destination)
+                dst_lines.append(" ".join(verdicts))
+            else:
+                dst_lines.append(src_line)
+        except KeyError as exception:
+            if len(exception.args) >= 1:
+                message = F"line {src_cursor}: error: No such tag '{exception.args[0]}'"
+                raise CompilationError(message)
+            raise exception
 
-                    dst_lines.append(" ".join(verdicts))
-                else:
-                    dst_lines.append(src_line)
-            except IndexError:
-                raise
-            except KeyError as e:
-                if len(e.args) >= 1:
-                    message = F"line {src_cursor}: error: No such tag '{e.args[0]}'"
-                    raise CompilationError(message)
-                raise e
+    return dst_lines
 
-        return dst_lines
-
-
-def ParseTags(src_lines: list) -> ParserOutput:
+def parse_tags(src_lines: list) -> ParserOutput:
     """Parse tags.
     If there are any tags at the end, an no-op instruction will be added.
     """
     dst_tagged = {}
     dst_lines = []
 
-    src_tail = len(src_lines)
     dst_cursor = 0
     last_tagged_line = 0
 
@@ -112,13 +106,11 @@ if __name__ == '__main__':
         sys.exit(1)
     compiler = BasicCompiler()
 
-    input_file = sys.stdin if sys.argv[1] == "-" else open(sys.argv[1], 'r')
-    output_file = sys.stdout if sys.argv[2] == "-" else open(sys.argv[2], 'w')
+    input_file = sys.stdin if sys.argv[1] == "-" else open(sys.argv[1], 'r', encoding='utf-8')
+    output_file = sys.stdout if sys.argv[2] == "-" else open(sys.argv[2], 'w', encoding='utf-8')
     try:
         result = compiler.compile(input_file.read())
         output_file.write(result)
     finally:
         output_file.close()
         input_file.close()
-
-

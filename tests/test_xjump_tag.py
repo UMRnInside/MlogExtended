@@ -1,8 +1,8 @@
-from .context import MlogExtended
 import unittest
+from .context import mlog_extended
 
-BasicCompiler = MlogExtended.BasicCompiler
-CompilationError = MlogExtended.CompilationError
+BasicCompiler = mlog_extended.BasicCompiler
+CompilationError = mlog_extended.CompilationError
 
 class XjumpTagTestSuite(unittest.TestCase):
     """Test xjump instructions."""
@@ -15,7 +15,7 @@ class XjumpTagTestSuite(unittest.TestCase):
         ]
         ans = ["jump 0 always 0 0", ]
         src_text = "\n".join(src)
-        self.assertEqual(ans, 
+        self.assertEqual(ans,
                 compiler.compile(src_text).splitlines())
 
     def test_multiple_tags(self):
