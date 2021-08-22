@@ -29,5 +29,7 @@ jobs:
           python-version: '3.9'
       # Runs a single command using the runners shell
       - name: Python Unit Test
-        uses: onichandame/python-test-action@0.0.0
+        run: |
+          pwd
+          python3.9 -m unittest
 
