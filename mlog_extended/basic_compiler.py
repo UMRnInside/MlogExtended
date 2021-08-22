@@ -1,9 +1,4 @@
 import sys
-from collections.abc import Callable
-
-TaggedLines = dict[str, int]
-ParserOutput = tuple[list, TaggedLines]
-InstructionHandler = Callable[[str], list[str]]
 
 class CompilationError(BaseException):
     pass
@@ -14,7 +9,7 @@ class BasicCompiler:
     def __init__(self):
         self.external_instructions = {}
 
-    def add_instruction(self, instruction: str, handler: InstructionHandler):
+    def add_instruction(self, instruction: str, handler):
         if instruction.startswith(":"):
             raise ValueError("Instructions that start with ':' is disallowed.")
         self.external_instructions[instruction] = handler
@@ -25,7 +20,7 @@ class BasicCompiler:
         code_lines = convert_xjump_and_tags(code_lines)
         return sep.join(code_lines) + sep
 
-    def convert_externals(self, src_lines: list[str]) -> list[str]:
+    def convert_externals(self, src_lines: list) -> list:
         """Convert added instructions, remove empty lines, etc."""
         dst_lines = []
         for src_line in src_lines:
@@ -44,7 +39,7 @@ class BasicCompiler:
                 pass
         return dst_lines
 
-def convert_xjump_and_tags(src_lines: list[str]) -> list[str]:
+def convert_xjump_and_tags(src_lines: list) -> list:
     (phase1_lines, dst_tagged) = parse_tags(src_lines)
     dst_lines = []
 
@@ -65,12 +60,12 @@ def convert_xjump_and_tags(src_lines: list[str]) -> list[str]:
         except KeyError as exception:
             if len(exception.args) >= 1:
                 message = F"line {src_cursor}: error: No such tag '{exception.args[0]}'"
-                raise CompilationError(message)
+                raise CompilationError(message) from exception
             raise exception
 
     return dst_lines
 
-def parse_tags(src_lines: list) -> ParserOutput:
+def parse_tags(src_lines: list) -> tuple:
     """Parse tags.
     If there are any tags at the end, an no-op instruction will be added.
     """
