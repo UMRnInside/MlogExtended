@@ -23,7 +23,7 @@ class BasicCompiler:
     def convert_externals(self, src_lines: list) -> list:
         """Convert added instructions, remove empty lines, etc."""
         dst_lines = []
-        for src_line in src_lines:
+        for (src_cursor, src_line) in enumerate(src_lines):
             src_line = src_line.strip().rstrip()
             try:
                 verdicts = src_line.split()
@@ -37,6 +37,14 @@ class BasicCompiler:
             except IndexError:
                 # verdicts[0]
                 pass
+            except CompilationError as exception:
+                ext_info = ""
+                if len(exception.args) > 0:
+                    ext_info = " ".join(exception.args)
+
+                message = F"line {src_cursor+1}: {ext_info}"
+                raise CompilationError(message) from exception
+
         return dst_lines
 
 def convert_xjump_and_tags(src_lines: list) -> list:
@@ -59,7 +67,7 @@ def convert_xjump_and_tags(src_lines: list) -> list:
                 dst_lines.append(src_line)
         except KeyError as exception:
             if len(exception.args) >= 1:
-                message = F"line {src_cursor}: error: No such tag '{exception.args[0]}'"
+                message = F"line {src_cursor+1}: error: No such tag '{exception.args[0]}'"
                 raise CompilationError(message) from exception
             raise exception
 
