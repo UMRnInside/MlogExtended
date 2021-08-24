@@ -1,8 +1,5 @@
 import sys
-
-class CompilationError(BaseException):
-    pass
-
+from .compilation_error import CompilationError
 
 class BasicCompiler:
     """Basic compiler, supports xjump instruction."""
