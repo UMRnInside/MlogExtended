@@ -1,4 +1,4 @@
-from .. import CompilationError
+from ..compilation_error import CompilationError
 
 # From Mindustry 126.2
 COMPARATORS = {
