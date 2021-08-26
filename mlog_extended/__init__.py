@@ -2,7 +2,7 @@
 """
 from .compilation_error import CompilationError
 from .basic_compiler import BasicCompiler
-from .instruction_extended_compiler import InstructionExtendedCompiler 
+from .extended_compiler import ExtendedCompiler 
 
 #CompilationError = _mlogex_bc.CompilationError
 #BasicCompiler = _mlogex_bc.BasicCompiler

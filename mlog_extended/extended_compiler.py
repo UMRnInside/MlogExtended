@@ -2,7 +2,7 @@
 from .basic_compiler import BasicCompiler
 from .extra_instructions import INSTRUCTIONS
 
-class InstructionExtendedCompiler(BasicCompiler):
+class ExtendedCompiler(BasicCompiler):
     """Similar to BasicCompiler, but support more instructions."""
     def __init__(self):
         super().__init__()
