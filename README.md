@@ -40,3 +40,33 @@ Looks like `:Tag1`, `:snake_case`, `:我能吞下玻璃而不伤身体`, etc.
  :NotTooFar
  printflush message1
  ```
+
+## `jump-if`
+ * Similar to `xjump` instruction
+ * Use C-style operators like `==` `!=` and `===`, etc.
+ 
+ ```
+ set i 0
+ :DoWhileLoop
+ op add i i 1
+ jump-if DoWhileLoop i <= 10
+ print i
+ 
+ jump-if NotTooFar @thisx <= 10000
+ print ". Oops, I am too far away!"
+ :NotTooFar
+ printflush message1
+ ```
+
+## `xlet`
+ * C-Sytle variable assignment, but very limited.
+ * Replaces vanilla `set` and `op` instructions.
+ * **ONLY** unary and binary operators are supported.
+ ```
+ xlet a = b
+ xlet a1 = b + c
+ xlet a1 = 2 ** 8
+ xlet a2 min c d
+ xlet a2 =~ x
+ xlet a2 floor x
+ ```
