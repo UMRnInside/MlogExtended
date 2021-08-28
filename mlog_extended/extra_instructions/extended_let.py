@@ -117,4 +117,6 @@ def extended_let(src_line: str) -> list:
         message = F"error: unsupported binary operator '{verdicts[4]}'"
         raise CompilationError(message)
 
-    raise CompilationError(F"error: too {'few' if len(verdicts)<6 else 'many'} arguments ({len(verdicts)}) for xlet")
+    message = F"error: too {'few' if len(verdicts)<6 else 'many'}"
+    message += "arguments ({len(verdicts)}) for xlet"
+    raise CompilationError(message)

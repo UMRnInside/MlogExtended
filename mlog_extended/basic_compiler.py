@@ -1,4 +1,3 @@
-import sys
 from .compilation_error import CompilationError
 
 class BasicCompiler:
@@ -99,18 +98,3 @@ def parse_tags(src_lines: list) -> tuple:
     if last_tagged_line == len(dst_lines):
         dst_lines.append("end")
     return (dst_lines, dst_tagged)
-
-if __name__ == '__main__':
-    if len(sys.argv) < 3:
-        print(F"Usage: {sys.argv[0]} <input_file> <output_file>")
-        sys.exit(1)
-    compiler = BasicCompiler()
-
-    input_file = sys.stdin if sys.argv[1] == "-" else open(sys.argv[1], 'r', encoding='utf-8')
-    output_file = sys.stdout if sys.argv[2] == "-" else open(sys.argv[2], 'w', encoding='utf-8')
-    try:
-        result = compiler.compile(input_file.read())
-        output_file.write(result)
-    finally:
-        output_file.close()
-        input_file.close()
