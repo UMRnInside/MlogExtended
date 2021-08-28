@@ -7,7 +7,8 @@ Mindustry logic with more instructions. Compiling to vanilla Mindustry logic IS 
 * Compile to vanilla Mindustry logic
 
 # Usage
- * `mlog_extended/BasicCompiler.py`
+ * `python3 -m mlog_extended <input_file> <output_file>`
+ See `python3 -m mlog_extended --help` for more information
 
 ## Tag
 Looks like `:Tag1`, `:snake_case`, `:我能吞下玻璃而不伤身体`, etc.
