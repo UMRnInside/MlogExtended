@@ -20,14 +20,14 @@ class XletTestSuite(unittest.TestCase):
             "xlet a max 42 1000"
         ]
         ans = [
-            "set a 42", 
-            "op not a 42 0", 
-            "op log a 42 0", 
-            "op log a 42 0", 
-            "op log10 a 42 0", 
-            "op log10 a 42 0", 
-            "op min a 42 1000", 
-            "op max a 42 1000", 
+            "set a 42",
+            "op not a 42 0",
+            "op log a 42 0",
+            "op log a 42 0",
+            "op log10 a 42 0",
+            "op log10 a 42 0",
+            "op min a 42 1000",
+            "op max a 42 1000",
         ]
         src_text = "\n".join(src)
         self.assertEqual(ans,
@@ -44,11 +44,11 @@ class XletTestSuite(unittest.TestCase):
             "xlet a = a // 42"
         ]
         ans = [
-            "set a 42", 
-            "op add a a 42", 
-            "op sub a a 42", 
-            "op mul a a 42", 
-            "op div a a 42", 
+            "set a 42",
+            "op add a a 42",
+            "op sub a a 42",
+            "op mul a a 42",
+            "op div a a 42",
             "op idiv a a 42"
         ]
         src_text = "\n".join(src)
