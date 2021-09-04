@@ -6,8 +6,13 @@ Mindustry logic with more instructions. Compiling to vanilla Mindustry logic IS 
 * Conditional jump to tags using `xjump` instructions
 * Compile to vanilla Mindustry logic
 
+# Installtion
+ Stable release: `pip install mlog_extended` or
+ `main` branch (nightly?): `pip install git+https://github.com/UMRnInside/MlogExtended`
+
 # Usage
  * `python3 -m mlog_extended <input_file> <output_file>`
+
  See `python3 -m mlog_extended --help` for more information
 
 ## Tag
