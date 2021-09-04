@@ -55,7 +55,7 @@ class XletTestSuite(unittest.TestCase):
         self.assertEqual(ans,
                 compiler.compile(src_text).splitlines())
 
-    def test_xlet_sebsir(self):
+    def test_xlet_sensor(self):
         compiler = ExtendedCompiler()
         src = [
             "xlet a sensor block1 @copper",
