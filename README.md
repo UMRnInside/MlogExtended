@@ -61,13 +61,38 @@ Looks like `:Tag1`, `:snake_case`, `:我能吞下玻璃而不伤身体`, etc.
 
 ## `xlet`
  * C-Sytle variable assignment, but very limited.
- * Replaces vanilla `set` and `op` instructions.
- * **ONLY** unary and binary operators are supported.
+ * Replaces vanilla `set`, `op` and `sensor` instructions.
+ * Expression parsing is **NOT** supported.
+
  ```
  xlet a = b
- xlet a1 = b + c
+ xlet a0 = b + c
  xlet a1 = 2 ** 8
  xlet a2 min c d
- xlet a2 =~ x
- xlet a2 floor x
+ xlet a3 =max c d
+ xlet a4 =~ x
+ xlet a5 =floor x
+ xlet unitX =sensor @unit @x
+ ```
+
+## `unit-control`
+ * A replacement of vanilla `ucontrol` command.
+ * Python-kwargs-style argument.
+ ```
+ unit-control idle
+ unit-control stop
+ unit-control move x=128 y=192
+ unit-control approach x=128 y=192 radius=9
+ unit-control boost enable=1
+ unit-control pathfind
+ unit-control target x=targetX y=targetY shoot=shooting
+ unit-control targetp unit=enemy shoot=shooting
+ unit-control itemDrop to=core amount=1
+ unit-control itemTake from=core amount=1 item=@copper
+ unit-control payDrop
+ unit-control payTake takeUnits=myUnit
+ unit-control mine x=128 y=192
+ unit-control flag value=10000
+ unit-control getBlock x=1 y=2 type=0 building=resultBuilding
+ unit-control within x=1 y=2 radius=3 result=isWithinRadius
  ```
