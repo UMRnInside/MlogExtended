@@ -7,8 +7,8 @@ Mindustry logic with more instructions. Compiling to vanilla Mindustry logic IS 
 * Compile to vanilla Mindustry logic
 
 # Installtion
- Stable release: `pip install mlog_extended` or
- `main` branch (nightly?): `pip install git+https://github.com/UMRnInside/MlogExtended`
+ * Stable release: `pip install mlog_extended` or
+ * `main` branch (nightly?): `pip install git+https://github.com/UMRnInside/MlogExtended`
 
 # Usage
  * `python3 -m mlog_extended <input_file> <output_file>`
