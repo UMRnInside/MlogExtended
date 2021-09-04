@@ -55,6 +55,19 @@ class XletTestSuite(unittest.TestCase):
         self.assertEqual(ans,
                 compiler.compile(src_text).splitlines())
 
+    def test_xlet_sebsir(self):
+        compiler = ExtendedCompiler()
+        src = [
+            "xlet a sensor block1 @copper",
+            "xlet b =sensor block1 @lead"
+        ]
+        ans = [
+            "sensor a block1 @copper",
+            "sensor b block1 @lead"
+        ]
+        src_text = "\n".join(src)
+        self.assertEqual(ans,
+                compiler.compile(src_text).splitlines())
 
     def test_fail_xlet_unsupported_operator(self):
         compiler = ExtendedCompiler()
