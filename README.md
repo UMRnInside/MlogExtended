@@ -83,21 +83,41 @@ Looks like `:Tag1`, `:snake_case`, `:我能吞下玻璃而不伤身体`, etc.
 ## `unit-control`
  * A replacement of vanilla `ucontrol` command.
  * Python-kwargs-style argument.
+ * Support aliases
  ```
  unit-control idle
  unit-control stop
  unit-control move x=128 y=192
  unit-control approach x=128 y=192 radius=9
+
  unit-control boost enable=1
+ unit-control boost boost=1
+
  unit-control pathfind
  unit-control target x=targetX y=targetY shoot=shooting
+
  unit-control targetp unit=enemy shoot=shooting
+ unit-control targetp target=enemy shoot=shooting
+
  unit-control itemDrop to=core amount=1
  unit-control itemTake from=core amount=1 item=@copper
  unit-control payDrop
  unit-control payTake takeUnits=myUnit
  unit-control mine x=128 y=192
+
  unit-control flag value=10000
+ unit-control flag flag=10000
  unit-control getBlock x=1 y=2 type=0 building=resultBuilding
+ unit-control getBlock x=1 y=2 resultType=0 resultBuilding=resultBuilding
+
  unit-control within x=1 y=2 radius=3 result=isWithinRadius
+ ```
+
+## `unit-radar`
+ * A replacement of vanilla `uradar` command.
+ * Python-kwargs-style argument.
+ * Support aliases
+ ```
+ unit-radar filter1=enemy filter2=attacker filter3=flying order=distance sort=1 output=attacker
+ unit-radar target=enemy orderBy=distance asc=1 output=enemy
  ```
