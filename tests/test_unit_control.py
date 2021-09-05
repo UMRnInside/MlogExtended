@@ -5,7 +5,7 @@ ExtendedCompiler = mlog_extended.ExtendedCompiler
 CompilationError = mlog_extended.CompilationError
 
 class UnitControlTestSuite(unittest.TestCase):
-    """Test xlet instructions."""
+    """Test unit-control instructions."""
 
     def test_unit_control_commands(self):
         compiler = ExtendedCompiler()
