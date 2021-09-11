@@ -6,3 +6,9 @@ def parse_kwargs(input_verdicts: list) -> dict:
         key, value = kv_string.split("=", 1)
         kwargs[key] = value
     return kwargs
+
+def apply_aliases(kwdict: dict, aliases: dict) -> dict:
+    for alias, real in aliases.items():
+        if alias in kwdict.keys():
+            kwdict[real] = kwdict[alias]
+    return kwdict

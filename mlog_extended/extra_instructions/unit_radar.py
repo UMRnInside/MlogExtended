@@ -1,5 +1,5 @@
 from ..compilation_error import CompilationError
-from .kwargs_parser import parse_kwargs
+from .kwargs_parser import parse_kwargs, apply_aliases
 
 ARGS = ("filter1", "filter2", "filter3", "order", "sort", "output")
 FILTER_NAMES = ("filter1", "filter2", "filter3")
@@ -14,9 +14,7 @@ def unit_radar(src_line: str) -> list:
     """
     verdicts = src_line.split()
     kwargs = parse_kwargs(verdicts[1:])
-    for alias, real in ARG_ALIASES.items():
-        if alias in kwargs.keys():
-            kwargs[real] = kwargs[alias]
+    kwargs = apply_aliases(kwargs, ARG_ALIASES)
 
     for filter_id in FILTER_NAMES:
         if filter_id not in kwargs.keys():
