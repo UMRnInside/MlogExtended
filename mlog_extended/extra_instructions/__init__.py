@@ -3,6 +3,7 @@ from .extended_let import extended_let
 from .unit_control import unit_control
 from .radars import general_radar
 from .unit_locate import unit_locate
+from .control import control
 
 def comment(src_line: str) -> list:
     """Returns an empty list."""
@@ -17,5 +18,6 @@ INSTRUCTIONS = {
     "unit-control": unit_control,
     "unit-radar": general_radar,
     "unit-locate": unit_locate,
-    "xradar": general_radar
+    "xradar": general_radar,
+    "xcontrol": control,
 }

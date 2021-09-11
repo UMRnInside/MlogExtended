@@ -1,15 +1,7 @@
 from ..compilation_error import CompilationError
-from .kwargs_parser import parse_kwargs
+from .kwargs_parser import parse_kwargs, pad_args
 
 TOTAL_VERDICTS = 7
-
-def pad_args(src: list) -> list:
-    """Pad extra args with 0."""
-    padding_count = TOTAL_VERDICTS - len(src)
-    result = []
-    result.extend(src)
-    result.extend(["0",]*padding_count)
-    return result
 
 COMMAND_ARGS = {
     "idle": (),
@@ -74,7 +66,7 @@ def unit_control(src_line: str) -> list:
         output_verdicts.append(command)
         for key in COMMAND_ARGS[command]:
             output_verdicts.append(kwargs[key])
-        output_verdicts = pad_args(output_verdicts)
+        output_verdicts = pad_args(output_verdicts, TOTAL_VERDICTS)
         result.append(" ".join(output_verdicts))
     except KeyError as exception:
         name = ""

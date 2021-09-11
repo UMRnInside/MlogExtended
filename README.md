@@ -134,3 +134,21 @@ Looks like `:Tag1`, `:snake_case`, `:我能吞下玻璃而不伤身体`, etc.
  unit-locate type=spawn resultX=x resultY=y resultIsFound=found building=building
  unit-locate type=damaged outX=x outY=y resultIsFound=found resultBuilding=building
  ```
+
+## `xcontrol`
+ * A replacement of vanilla `control` command
+ ```
+ # Disable a generator
+ xcontrol generator1 action=toggle status=0
+ xcontrol generator1 action=enabled status=0
+ # Control a cyclone (turret), using argument aliases(unit vs target)
+ xcontrol cyclone1 action=shoot x=enemyX y=enemyY shoot=1
+ xcontrol cyclone1 action=shoot x=enemyX y=enemyY shoot=0
+ xcontrol cyclone1 action=shootp unit=enemy shoot=1
+ xcontrol cyclone1 action=shootp target=enemy shoot=1
+ # Config a sorter to sort different items
+ xcontrol sorter1 action=configure config=@copper
+ xcontrol sorter1 action=config config=@lead
+ # Set illuminator's color
+ xcontrol illuminator1 action=color r=255 g=153 b=0
+ ```
