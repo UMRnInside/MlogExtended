@@ -121,3 +121,14 @@ Looks like `:Tag1`, `:snake_case`, `:我能吞下玻璃而不伤身体`, etc.
  unit-radar filter1=enemy filter2=attacker filter3=flying order=distance sort=1 output=attacker
  unit-radar target=enemy orderBy=distance asc=1 output=enemy
  ```
+
+## `unit-locate`
+ * A replacement of vanilla `ulocate` command
+ ```
+ unit-locate type=ore oreType=@coal resultX=x resultY=y resultIsFound=found
+ unit-locate type=building group=core isEnemy=false outX=x outY=y found=found building=core
+ # Aliases
+ unit-locate find=building group=core enemy=false outX=x outY=y found=found building=core
+ unit-locate type=spawn resultX=x resultY=y resultIsFound=found building=building
+ unit-locate type=damaged outX=x outY=y resultIsFound=found resultBuilding=building
+ ```
