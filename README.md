@@ -113,13 +113,15 @@ Looks like `:Tag1`, `:snake_case`, `:我能吞下玻璃而不伤身体`, etc.
  unit-control within x=1 y=2 radius=3 result=isWithinRadius
  ```
 
-## `unit-radar`
- * A replacement of vanilla `uradar` command.
+## `unit-radar` and `xradar`
+ * A replacement of vanilla `uradar`/`radar` command.
  * Python-kwargs-style argument.
  * Support aliases
+ * They are similar, as `uradar` and `radar` instruction are similar
  ```
- unit-radar filter1=enemy filter2=attacker filter3=flying order=distance sort=1 output=attacker
- unit-radar target=enemy orderBy=distance asc=1 output=enemy
+ unit-radar filter1=enemy filter2=attacker filter3=flying order=1 sort=distance output=attacker
+ unit-radar target=enemy orderBy=maxHealth asc=1 output=enemy
+ xradar from=turret1 filter1=enemy filter2=flying orderBy=distance asc=0 output=target
  ```
 
 ## `unit-locate`
