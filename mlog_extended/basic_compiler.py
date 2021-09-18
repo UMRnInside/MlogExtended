@@ -13,7 +13,10 @@ class BasicCompiler:
     def compile(self, src_text: str, sep='\n') -> str:
         code_lines = src_text.splitlines()
         code_lines = self.convert_externals(code_lines)
-        code_lines = convert_xjump_and_tags(code_lines)
+
+        code_lines, tags = parse_tags(code_lines)
+        code_lines = convert_xjumps(code_lines, tags)
+        code_lines = replace_tag_counter_macros(code_lines, tags)
         return sep.join(code_lines) + sep
 
     def convert_externals(self, src_lines: list) -> list:
@@ -40,14 +43,12 @@ class BasicCompiler:
 
                 message = F"line {src_cursor+1}: {ext_info}"
                 raise CompilationError(message) from exception
-
         return dst_lines
 
-def convert_xjump_and_tags(src_lines: list) -> list:
-    (phase1_lines, dst_tagged) = parse_tags(src_lines)
+def convert_xjumps(src_lines: list, dst_tagged: dict) -> list:
     dst_lines = []
 
-    for (src_cursor, src_line) in enumerate(phase1_lines):
+    for (src_cursor, src_line) in enumerate(src_lines):
         try:
             verdicts = src_line.split()
             if verdicts[0] == "xjump":
@@ -98,3 +99,30 @@ def parse_tags(src_lines: list) -> tuple:
     if last_tagged_line == len(dst_lines):
         dst_lines.append("end")
     return (dst_lines, dst_tagged)
+
+def replace_tag_counter_macros(src_lines: list, tags: dict) -> list:
+    """Trivial __TAG_COUNTER macro processor.
+Replace __TAG_COUNTER(tag_name) with corresponding destination code @counter.
+"""
+    result = []
+    MACRO_HEADER = "__TAG_COUNTER("
+    MACRO_HEADER_LEN = len(MACRO_HEADER)
+    for (src_cursor, src_line) in enumerate(src_lines):
+        verdicts = src_line.split()
+        new_verdicts = []
+        for arg in verdicts:
+            if not arg.startswith(MACRO_HEADER) or not arg.endswith(")"):
+                new_verdicts.append(arg)
+                continue
+            tag_name = arg[MACRO_HEADER_LEN:-1]
+            try:
+                tag_line = tags[tag_name]
+                new_verdicts.append(str(tag_line))
+            except KeyError as exception:
+                if len(exception.args) >= 1:
+                    message = F"line {src_cursor+1}: error: No such tag '{exception.args[0]}'"
+                    raise CompilationError(message) from exception
+                raise exception
+        result.append(" ".join(new_verdicts))
+    return result
+
