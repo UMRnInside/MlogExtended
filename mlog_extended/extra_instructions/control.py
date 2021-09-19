@@ -50,7 +50,7 @@ def control(src_line: str) -> list:
         if action in ACTION_ALIASES.keys():
             action = ACTION_ALIASES[action]
         if action not in ACTION_ARGS.keys():
-            message = F"error: unsupported control action '{command}'"
+            message = F"error: unsupported control action '{action}'"
             raise CompilationError(message)
         if action in ACTION_ARG_ALIASES.keys():
             kwargs = apply_aliases(kwargs, ACTION_ARG_ALIASES[action])
