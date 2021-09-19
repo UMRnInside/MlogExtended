@@ -1,3 +1,4 @@
+"""Provide xlet instruction, a replacement of `op`, `set`, `sensor` and `getlink`."""
 from .. import CompilationError
 
 # From Mindustry 126.2
@@ -50,6 +51,29 @@ UNARY_ASSIGNERS = {
     "lg": "log10"
 }
 
+def unary_xlet(verdicts: list) -> list:
+    """xlet for unary operators and assignments."""
+    line = ""
+    if verdicts[2] == "=":
+        # variable assignment, 'set' in Mindustry logic
+        lvalue, rvalue = verdicts[1], verdicts[3]
+        line = F"set {lvalue} {rvalue}"
+
+    verdicts[2] = verdicts[2].lstrip("=")
+    if verdicts[2] in UNARY_ASSIGNERS.keys():
+        vanilla_assigner = UNARY_ASSIGNERS[verdicts[2]]
+        lvalue, rvalue = verdicts[1], verdicts[3]
+        line = F"op {vanilla_assigner} {lvalue} {rvalue} 0"
+    elif verdicts[2] == "getlink":
+        lvalue, link_id = verdicts[1], verdicts[3]
+        line = F"getlink {lvalue} {link_id}"
+    if len(line) > 0:
+        return [line, ]
+    message = F"error: unsupported operator '{verdicts[2]}'"
+    if verdicts[2] in BINARY_ASSIGNERS.keys():
+        message = F"error: too few argument for '{verdicts[2]}'"
+    raise CompilationError(message)
+
 def extended_let(src_line: str) -> list:
     """
     C-sytle operators for Mindustry logic. Use '**' for pow/exponetia.
@@ -68,45 +92,24 @@ def extended_let(src_line: str) -> list:
     if len(verdicts) == 2:
         return []
     if len(verdicts) == 4:
-        if verdicts[2] == "=":
-            # variable assignment, 'set' in Mindustry logic
-            lvalue, rvalue = verdicts[1], verdicts[3]
-            line = F"set {lvalue} {rvalue}"
-            return [line, ]
-
-        verdicts[2] = verdicts[2].lstrip("=")
-        if verdicts[2] in UNARY_ASSIGNERS.keys():
-            vanilla_assigner = UNARY_ASSIGNERS[verdicts[2]]
-            lvalue, rvalue = verdicts[1], verdicts[3]
-            line = F"op {vanilla_assigner} {lvalue} {rvalue} 0"
-            return [line, ]
-        if verdicts[2] == "getlink":
-            lvalue, link_id = verdicts[1], verdicts[3]
-            line = F"getlink {lvalue} {link_id}"
-            return [line, ]
-
-        message = F"error: unsupported operator '{verdicts[2]}'"
-        if verdicts[2] in BINARY_ASSIGNERS.keys():
-            message = F"error: too few argument for '{verdicts[2]}'"
-        raise CompilationError(message)
-
+        result = unary_xlet(verdicts)
+        return result
     if len(verdicts) == 5:
         verdicts[2] = verdicts[2].lstrip("=")
+        line = ""
         if verdicts[2] in BINARY_ASSIGNERS.keys():
             vanilla_assigner = BINARY_ASSIGNERS[verdicts[2]]
             lvalue, arg1, arg2 = verdicts[1], verdicts[3], verdicts[4]
             line = F"op {vanilla_assigner} {lvalue} {arg1} {arg2}"
-            return [line, ]
-        # Use sensor command
-        if verdicts[2] == "sensor":
+        elif verdicts[2] == "sensor":
             lvalue, target, attribute = verdicts[1], verdicts[3], verdicts[4]
             line = F"sensor {lvalue} {target} {attribute}"
+        if len(line) > 0:
             return [line, ]
         message = F"error: unsupported operator '{verdicts[2]}'"
         raise CompilationError(message)
 
     if len(verdicts) == 6:
-        output_verdicts = []
         if verdicts[4] in BINARY_OPERATORS.keys():
             vanilla_operator = BINARY_OPERATORS[verdicts[4]]
             lvalue, arg1, arg2 = verdicts[1], verdicts[3], verdicts[5]
