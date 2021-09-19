@@ -62,29 +62,27 @@ def extended_let(src_line: str) -> list:
     xlet a2 =~ x
     xlet a2 floor x
     xlet x =sensor @unit @x
+    xlet building =getlink 1
     """
     verdicts = src_line.split()
     if len(verdicts) == 2:
         return []
     if len(verdicts) == 4:
-        output_verdicts = []
         if verdicts[2] == "=":
             # variable assignment, 'set' in Mindustry logic
-            output_verdicts.append("set")
-            output_verdicts.append(verdicts[1])
-            output_verdicts.append(verdicts[3])
-            line = " ".join(output_verdicts)
+            lvalue, rvalue = verdicts[1], verdicts[3]
+            line = F"set {lvalue} {rvalue}"
             return [line, ]
 
         verdicts[2] = verdicts[2].lstrip("=")
         if verdicts[2] in UNARY_ASSIGNERS.keys():
             vanilla_assigner = UNARY_ASSIGNERS[verdicts[2]]
-            output_verdicts.append("op")
-            output_verdicts.append(vanilla_assigner)
-            output_verdicts.append(verdicts[1])
-            output_verdicts.append(verdicts[3])
-            output_verdicts.append("0")
-            line = " ".join(output_verdicts)
+            lvalue, rvalue = verdicts[1], verdicts[3]
+            line = F"op {vanilla_assigner} {lvalue} {rvalue} 0"
+            return [line, ]
+        if verdicts[2] == "getlink":
+            lvalue, link_id = verdicts[1], verdicts[3]
+            line = F"getlink {lvalue} {link_id}"
             return [line, ]
 
         message = F"error: unsupported operator '{verdicts[2]}'"
@@ -93,23 +91,16 @@ def extended_let(src_line: str) -> list:
         raise CompilationError(message)
 
     if len(verdicts) == 5:
-        output_verdicts = []
+        verdicts[2] = verdicts[2].lstrip("=")
         if verdicts[2] in BINARY_ASSIGNERS.keys():
             vanilla_assigner = BINARY_ASSIGNERS[verdicts[2]]
-            output_verdicts.append("op")
-            output_verdicts.append(vanilla_assigner)
-            output_verdicts.append(verdicts[1])
-            output_verdicts.append(verdicts[3])
-            output_verdicts.append(verdicts[4])
-            line = " ".join(output_verdicts)
+            lvalue, arg1, arg2 = verdicts[1], verdicts[3], verdicts[4]
+            line = F"op {vanilla_assigner} {lvalue} {arg1} {arg2}"
             return [line, ]
         # Use sensor command
-        verdicts[2] = verdicts[2].lstrip("=")
         if verdicts[2] == "sensor":
-            output_verdicts.append("sensor")
-            output_verdicts.append(verdicts[1])
-            output_verdicts.extend(verdicts[3:5])
-            line = " ".join(output_verdicts)
+            lvalue, target, attribute = verdicts[1], verdicts[3], verdicts[4]
+            line = F"sensor {lvalue} {target} {attribute}"
             return [line, ]
         message = F"error: unsupported operator '{verdicts[2]}'"
         raise CompilationError(message)
@@ -118,17 +109,13 @@ def extended_let(src_line: str) -> list:
         output_verdicts = []
         if verdicts[4] in BINARY_OPERATORS.keys():
             vanilla_operator = BINARY_OPERATORS[verdicts[4]]
-            output_verdicts.append("op")
-            output_verdicts.append(vanilla_operator)
-            output_verdicts.append(verdicts[1])
-            output_verdicts.append(verdicts[3])
-            output_verdicts.append(verdicts[5])
-            line = " ".join(output_verdicts)
+            lvalue, arg1, arg2 = verdicts[1], verdicts[3], verdicts[5]
+            line = F"op {vanilla_operator} {lvalue} {arg1} {arg2}"
             return [line, ]
 
         message = F"error: unsupported binary operator '{verdicts[4]}'"
         raise CompilationError(message)
 
     message = F"error: too {'few' if len(verdicts)<6 else 'many'}"
-    message += "arguments ({len(verdicts)}) for xlet"
+    message += F"arguments ({len(verdicts)}) for xlet"
     raise CompilationError(message)

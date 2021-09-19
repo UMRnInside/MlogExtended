@@ -66,7 +66,7 @@ Looks like `:Tag1`, `:snake_case`, `:我能吞下玻璃而不伤身体`, etc.
 
 ## `xlet`
  * C-Sytle variable assignment, but very limited.
- * Replaces vanilla `set`, `op` and `sensor` instructions.
+ * Replaces vanilla `set`, `op`, `sensor` and `getlink` instructions.
  * Expression parsing is **NOT** supported.
 
  ```
@@ -78,6 +78,7 @@ Looks like `:Tag1`, `:snake_case`, `:我能吞下玻璃而不伤身体`, etc.
  xlet a4 =~ x
  xlet a5 =floor x
  xlet unitX =sensor @unit @x
+ xlet turret =getlink 2
  ```
 
 ## `unit-control`
