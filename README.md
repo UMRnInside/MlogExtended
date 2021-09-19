@@ -152,3 +152,30 @@ Looks like `:Tag1`, `:snake_case`, `:我能吞下玻璃而不伤身体`, etc.
  # Set illuminator's color
  xcontrol illuminator1 action=color r=255 g=153 b=0
  ```
+
+## `__unsafe_call` and `__unsafe_return`
+ * Thin wrapper of "function calls"
+
+ ```
+ xlet i = 10
+ :loop
+ xlet delays = 60 - 5
+ :delay1s
+ xlet delays = delays - 1
+ jump-if delay1s delays > 0
+ 
+ # Pass arguments
+ xlet print_content = i
+ xlet message_board = message1
+ # Function call
+ __unsafe_call AutoPrint
+ xlet i = i - 1
+ jump-if loop i >= 0
+ end
+ 
+ :AutoPrint
+ print print_content
+ printflush message_board
+ # Return statement, does NOT return a value
+ __unsafe_return AutoPrint
+ ```
