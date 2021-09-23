@@ -29,6 +29,7 @@ if __name__ == '__main__':
     compiler = CompilerClass()
 
     with openfile(args.input_file, 'r', sys.stdin) as f_in:
+        source_code = f_in.read()
+        result = compiler.compile(source_code)
         with openfile(args.output_file, 'w', sys.stdout) as f_out:
-            source_code = f_in.read()
-            f_out.write(compiler.compile(source_code))
+            f_out.write(result)
