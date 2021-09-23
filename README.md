@@ -154,6 +154,34 @@ Looks like `:Tag1`, `:snake_case`, `:我能吞下玻璃而不伤身体`, etc.
  xcontrol illuminator1 action=color r=255 g=153 b=0
  ```
 
+## `xdraw`
+ * A replacement of vanilla `draw` command
+ ```
+ # Clear display, using material gray color #373737
+ xdraw clear r=55 g=55 b=55
+ xdraw clear rgb=0x373737
+ # Set stroke width
+ xdraw stroke width=1
+ # Set color to #FF9100
+ xdraw color rgb=0xFF9100
+ # Draw a line
+ xdraw line x=3 y=1 x2=3 y2=80
+ xdraw line x1=3 y1=1 x2=3 y2=80
+ # Draw a rectangle
+ xdraw rect x1=5 y1=5 height=5 width=10
+ # Draw a line rectangle
+ xdraw lineRect x1=15 y1=5 height=5 width=10
+ # Draw a pentagon
+ xdraw poly x=20 y=40 sides=5 radius=10 rotation=0
+ # Draw a triangle
+ xdraw triangle x1=30 y1=30 x2=20 y2=30 x3=20 y3=20
+ # Draw a cyclone
+ xdraw color rgb=FFFFFF
+ xdraw image x=60 y=60 image=@cyclone size=40 rotation=0
+ # Flush
+ drawflush display1
+ ```
+
 ## `__unsafe_call` and `__unsafe_return`
  * Thin wrapper of "function calls"
 
@@ -180,3 +208,4 @@ Looks like `:Tag1`, `:snake_case`, `:我能吞下玻璃而不伤身体`, etc.
  # Return statement, does NOT return a value
  __unsafe_return AutoPrint
  ```
+

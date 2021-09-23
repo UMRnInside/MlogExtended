@@ -4,6 +4,7 @@ from .unit_control import unit_control
 from .radars import general_radar
 from .unit_locate import unit_locate
 from .control import control
+from .draw import draw
 from .unsafe_call_return import unsafe_call, unsafe_return
 
 def comment(src_line: str) -> list:
@@ -21,6 +22,7 @@ INSTRUCTIONS = {
     "unit-locate": unit_locate,
     "xradar": general_radar,
     "xcontrol": control,
+    "xdraw": draw,
     "__unsafe_call": unsafe_call,
     "__unsafe_return": unsafe_return,
 }
