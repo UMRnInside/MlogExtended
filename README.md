@@ -72,13 +72,24 @@ Looks like `:Tag1`, `:snake_case`, `:我能吞下玻璃而不伤身体`, etc.
  ```
  xlet a = b
  xlet a0 = b + c
+ xlet a0 = b * c
+ # '/' for floating-point numbers, and '//' for integers
+ xlet a0 = b / c
+ xlet a0 = b // c
+
+ # '^' Stands for bitwise XOR
  xlet a1 = 2 ** 8
  xlet a2 min c d
  xlet a3 =max c d
+
+ # NOTE: NO EXPRESSION PARSING
  xlet a4 =~ x
  xlet a5 =floor x
  xlet unitX =sensor @unit @x
  xlet turret =getlink 2
+ # With simple += support
+ xlet a += 5
+ xlet a //= 2
  ```
 
 ## `unit-control`

@@ -59,11 +59,15 @@ def unary_xlet(verdicts: list) -> list:
         lvalue, rvalue = verdicts[1], verdicts[3]
         line = F"set {lvalue} {rvalue}"
 
-    verdicts[2] = verdicts[2].lstrip("=")
+    verdicts[2] = verdicts[2].strip("=")
     if verdicts[2] in UNARY_ASSIGNERS.keys():
         vanilla_assigner = UNARY_ASSIGNERS[verdicts[2]]
         lvalue, rvalue = verdicts[1], verdicts[3]
         line = F"op {vanilla_assigner} {lvalue} {rvalue} 0"
+    elif verdicts[2] in BINARY_OPERATORS.keys():
+        vanilla_operator = BINARY_OPERATORS[verdicts[2]]
+        lvalue, rvalue = verdicts[1], verdicts[3]
+        line = F"op {vanilla_operator} {lvalue} {lvalue} {rvalue}"
     elif verdicts[2] == "getlink":
         lvalue, link_id = verdicts[1], verdicts[3]
         line = F"getlink {lvalue} {link_id}"
@@ -80,11 +84,14 @@ def extended_let(src_line: str) -> list:
     Usage:
     xlet a = b
     xlet a1 = b + c
+    xlet a1 += 3
     xlet a1 = 2 ** 8
     xlet a2 min c d
     xlet a2 =min c d
     xlet a2 =~ x
     xlet a2 floor x
+    xlet a3 = b / c
+    xlet a4 = b // c
     xlet x =sensor @unit @x
     xlet building =getlink 1
     """

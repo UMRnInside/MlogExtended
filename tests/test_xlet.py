@@ -18,6 +18,9 @@ class XletTestSuite(unittest.TestCase):
             "xlet a lg 42",
             "xlet a =min 42 1000",
             "xlet a =max 42 1000",
+            "xlet a += 5",
+            "xlet a |= 7",
+            "xlet a //= 7",
             "xlet health =sensor @unit @health",
             "xlet building =getlink 1"
         ]
@@ -30,6 +33,9 @@ class XletTestSuite(unittest.TestCase):
             "op log10 a 42 0",
             "op min a 42 1000",
             "op max a 42 1000",
+            "op add a a 5",
+            "op or a a 7",
+            "op idiv a a 7",
             "sensor health @unit @health",
             "getlink building 1"
         ]
