@@ -1,4 +1,9 @@
 # Changelog since v0.0.4
+## v0.0.8
+ * BasicDecompiler: fix jump conversion failure
+
+## v0.0.7
+ * Support decompilation
 
 ## v0.0.6
  * `xlet` instruction support operators like `+=`, `*=`, etc.

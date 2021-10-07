@@ -32,12 +32,13 @@ class BasicDecompiler:
         return self.decompile(src_text, sep)
 
     def _parse_jumps(self, src_lines:list) -> None:
-        for line_number, src_line in enumerate(src_lines):
+        for src_line in src_lines:
             verdicts = src_line.split()
             if len(verdicts) == 0:
                 continue
             if verdicts[0] == "jump":
                 tag_name = DECOMPILER_TAG_PREFIX + verdicts[1]
+                line_number = int(verdicts[1])
                 self.line_tags[line_number] = tag_name
 
     def _convert_jump(self, src_line:str) -> str:
