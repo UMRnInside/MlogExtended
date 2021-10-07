@@ -1,14 +1,19 @@
 # MlogExtended
-Mindustry logic with more instructions. Compiling to vanilla Mindustry logic IS supported. NOT A MOD.
+Mindustry logic with more instructions. Compiling to vanilla Mindustry logic (vanilla mlog)IS supported. NOT A MOD.
 
 # Features
-* Tag support
-* Conditional jump to tags using `xjump` instructions
-* Compile to vanilla Mindustry logic
+* Conditional jump to tags using `xjump` instructions.
+* Extended instruction set 
+* 99% compatible with vanilla Mindustry logic.
+* Accurate 1:1 conversion from MlogExtended code to vanilla mlog code.
+    * Except for `__unsafe_call`, it takes 2 instructions.
+* Compile to vanilla Mindustry logic for in-game use.
+* "Decompile" from vanilla mlog code.
 
 # Installtion
  * Stable release: `pip install mlog_extended` or
  * `main` branch (nightly?): `pip install git+https://github.com/UMRnInside/MlogExtended`
+ * [Web version](https://umrninside.github.io/mlogex-compiler-web)
 
 # Usage
  * `python3 -m mlog_extended <input_file> <output_file>`
