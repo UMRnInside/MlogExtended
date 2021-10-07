@@ -1,1 +1,1 @@
-find . | grep '\.py$' | xargs pylint
+find . | grep '\.py$' | grep -v "tests/" | xargs pylint

@@ -125,4 +125,3 @@ Replace __TAG_COUNTER(tag_name) with corresponding destination code @counter.
                 raise exception
         result.append(" ".join(new_verdicts))
     return result
-

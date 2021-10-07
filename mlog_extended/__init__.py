@@ -3,3 +3,4 @@
 from .compilation_error import CompilationError
 from .basic_compiler import BasicCompiler
 from .extended_compiler import ExtendedCompiler
+from .basic_decompiler import BasicDecompiler

@@ -2,6 +2,7 @@ import argparse
 import sys
 from . import BasicCompiler
 from . import ExtendedCompiler
+from . import BasicDecompiler
 
 parser = argparse.ArgumentParser(description="Extended Minductry Logic Compiler.",
         epilog="- stands for standard input/output")
@@ -13,6 +14,9 @@ parser.add_argument('--basic', '-b', action='store_true',
         help="Use basic compiler only (xjump instruction)")
 parser.add_argument('--extended', '-e', action='store_true',
         help="Use extended compiler (default)")
+parser.add_argument('--decompile', '-d', action='store_true',
+        help="Decompile vanilla Mindustry logic to MlogExtended code")
+
 
 def openfile(filename: str, mode: str, default=None):
     if filename == "-":
@@ -26,6 +30,8 @@ if __name__ == '__main__':
     CompilerClass = ExtendedCompiler
     if args.basic:
         CompilerClass = BasicCompiler
+    elif args.decompile:
+        CompilerClass = BasicDecompiler
     compiler = CompilerClass()
 
     with openfile(args.input_file, 'r', sys.stdin) as f_in:
