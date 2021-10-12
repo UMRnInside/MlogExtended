@@ -1,4 +1,7 @@
 # Changelog since v0.0.4
+## v0.0.9
+ * BasicDecompiler: fix unary operation not decompiling correctly
+
 ## v0.0.8
  * BasicDecompiler: fix jump conversion failure
 

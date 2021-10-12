@@ -84,6 +84,7 @@ class XletConvertor:
             xlet_action = self.binary_operators[action]
             return F"xlet {destination} = {value_a} {xlet_action} {value_b}"
         if action in self.unary_assigners.keys():
+            xlet_action = self.unary_assigners[action]
             return F"xlet {destination} ={xlet_action} {value_a}"
         return " ".join(verdicts)
 
