@@ -233,7 +233,7 @@ Looks like `:Tag1`, `:snake_case`, `:我能吞下玻璃而不伤身体`, etc.
  ```
 if i == 0
     xlet sign = 0
-elif i < 1
+elif i < 0
     xlet sign = -1
 else
     xlet sign = 1
