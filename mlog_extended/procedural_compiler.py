@@ -40,14 +40,14 @@ Keywords:
                 continue
             if verdicts[0] in self.if_keywords:
                 try:
-                    dst_lines.append(self.handle_if(verdicts, str(line_number)))
+                    dst_lines.extend(self.handle_if(verdicts, str(line_number)))
                 except IndexError as exception:
                     message = F"line {line_number+1}: error: "
                     message += F"{verdicts[0]} without if."
                     raise CompilationError(message) from exception
             elif verdicts[0] in self.while_keywords:
                 try:
-                    dst_lines.append(self.handle_while(verdicts, str(line_number)))
+                    dst_lines.extend(self.handle_while(verdicts, str(line_number)))
                 except IndexError as exception:
                     message = F"line {line_number+1}: error: "
                     message += F"{verdicts[0]} outside of loop."
