@@ -1,4 +1,10 @@
 # Changelog since v0.0.4
+
+## v0.1.0:
+ * Add ProceduralCompiler
+ * ProceduralCompiler: support `if-elif-else-endif`
+ * ProceduralCompiler: support `while-wend`
+
 ## v0.0.9
  * BasicDecompiler: fix unary operation not decompiling correctly
 

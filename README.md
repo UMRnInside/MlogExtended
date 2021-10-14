@@ -7,6 +7,7 @@ Mindustry logic with more instructions. Compiling to vanilla Mindustry logic (va
 * 99% compatible with vanilla Mindustry logic.
 * Accurate 1:1 conversion from MlogExtended code to vanilla mlog code.
     * Except for `__unsafe_call`, it takes 2 instructions.
+    * `if-elif-else-endif` and `while-wend` has more costs, too.
 * Compile to vanilla Mindustry logic for in-game use.
 * "Decompile" from vanilla mlog code.
 
@@ -225,3 +226,37 @@ Looks like `:Tag1`, `:snake_case`, `:我能吞下玻璃而不伤身体`, etc.
  __unsafe_return AutoPrint
  ```
 
+## `if-elif-else-endif`
+ * Supported by procedural compiler
+ * Similar restrictions to `xlet`
+ * Cost: 3N+2 vanilla mlog instructions, if there are N `elif` and `else` statements.
+ ```
+if i == 0
+    xlet sign = 0
+elif i < 1
+    xlet sign = -1
+else
+    xlet sign = 1
+endif
+ ```
+
+## `while-wend` or `while-endwhile`
+ * Supported by procedural compiler
+ * Similar restrictions to `xlet`
+ * Support `break` and `continue`
+ * Cost: 3 vanilla mlog instructions, 1 at the beginning and 2 at the end
+ * **NOTE**: you cannot use `else if` directly, use `elif` instead
+ ```
+xlet i = 0
+while i < 10
+    print i
+    print ", "
+    xlet i += 1
+    if i == 6
+        continue
+    elif i == 8
+        break
+    endif
+wend
+printflush message1
+ ```
