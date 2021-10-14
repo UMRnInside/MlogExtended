@@ -62,8 +62,8 @@ Keywords:
         if verdicts[0] == "if":
             self.if_stack.append(IfElseFlags(identifier))
             top_tagger = self.if_stack[-1]
-            top_tagger.increase_branch_id()
             next_tag = top_tagger.get_next_branch_tag()
+            top_tagger.increase_branch_id()
             result.append(create_temporary_xlet(condition, verdicts[1:]))
             result.append(F"jump-if {next_tag} {condition} == false")
             return result

@@ -1,5 +1,8 @@
 # Changelog since v0.0.4
 
+## v0.1.1
+ * ProceduralCompiler: fix `if` condition skipping the second block
+
 ## v0.1.0:
  * Add ProceduralCompiler
  * ProceduralCompiler: support `if-elif-else-endif`
