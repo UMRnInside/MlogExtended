@@ -3,7 +3,7 @@
 class WhileLoopFlags:
     """Maintain while loop flags."""
     def __init__(self, identifier: str):
-        self.tag_prefix = F":__mlogex_while_loop_{identifier}"
+        self.tag_prefix = F"__mlogex_while_loop_{identifier}"
         self.while_looper = []
 
     def get_condition_tag(self):
@@ -19,7 +19,7 @@ class WhileLoopFlags:
 class IfElseFlags:
     """Main if-elif-else branches and flags."""
     def __init__(self, identifier: str):
-        self.tag_prefix = F":__mlogex_branches_{identifier}"
+        self.tag_prefix = F"__mlogex_branches_{identifier}"
         self.branch_id = 0
 
     def get_current_branch_tag(self):

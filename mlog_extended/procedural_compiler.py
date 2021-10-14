@@ -25,7 +25,7 @@ Keywords:
     """
 
     if_keywords = ("if", "elif", "else", "endif")
-    while_keywords = ("while", "wend", "endwhile", "do")
+    while_keywords = ("while", "wend", "endwhile", "break", "continue")
 
     def __init__(self):
         self.backend = ExtendedCompiler()
@@ -74,14 +74,16 @@ Keywords:
             final_tag = top_tagger.get_endif_tag()
             top_tagger.increase_branch_id()
             result.append(F"jump-if {final_tag} always")
-            result.append(current_tag)
+            result.append(F":{current_tag}")
             if verdicts[0] == "elif":
                 result.append(create_temporary_xlet(condition, verdicts[1:]))
                 result.append(F"jump-if {next_tag} {condition} == false")
             return result
         if verdicts[0] == "endif":
+            current_tag = top_tagger.get_current_branch_tag()
             final_tag = top_tagger.get_endif_tag()
-            result.append(final_tag)
+            result.append(F":{current_tag}")
+            result.append(F":{final_tag}")
             self.if_stack.pop()
             return result
         return []
@@ -95,20 +97,22 @@ Keywords:
             start_tag = top_tagger.get_loopbody_start_tag()
             cond_tag = top_tagger.get_condition_tag()
 
-            top_tagger.while_looper.append(cond_tag)
+            top_tagger.while_looper.append(F":{cond_tag}")
             top_tagger.while_looper.append(create_temporary_xlet(condition, verdicts[1:]))
             top_tagger.while_looper.append(F"jump-if {start_tag} {condition} != false")
             result.append(F"jump-if {cond_tag} always")
-            result.append(start_tag)
+            result.append(F":{start_tag}")
             return result
         top_tagger = self.loop_stack[-1]
-        start_tag = top_tagger.get_loopbody_end_tag()
+        cond_tag = top_tagger.get_condition_tag()
         end_tag = top_tagger.get_loopbody_end_tag()
         if verdicts[0] in ("wend", "endwhile"):
             result.extend(top_tagger.while_looper)
-            result.append(end_tag)
-            return []
-        if verdicts[0] == "break":
+            # result.append(F"# {repr(top_tagger.while_looper)}")
+            # result.append(F"# {repr(verdicts)}")
+            result.append(F":{end_tag}")
+            self.loop_stack.pop()
+        elif verdicts[0] == "break":
             result.append(F"jump-if {end_tag} always")
         elif verdicts[0] == "continue":
             result.append(F"jump-if {cond_tag} always")
