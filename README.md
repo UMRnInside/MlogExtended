@@ -229,7 +229,11 @@ Looks like `:Tag1`, `:snake_case`, `:我能吞下玻璃而不伤身体`, etc.
 ## `if-elif-else-endif`
  * Supported by procedural compiler
  * Similar restrictions to `xlet`
- * Cost: 3N+2 vanilla mlog instructions, if there are N `elif` and `else` statements.
+ * Cost: 
+   * 2 for `if`, or 1 if condition is invertable
+   * 3 for `elif`, or 2 if condition is invertable
+   * 1 for `else`
+   * condition `==`, `!=`, `<`, `<=`, `>=`, `>` are invertable
  ```
 if i == 0
     xlet sign = 0
