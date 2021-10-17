@@ -4,6 +4,15 @@ from .compilation_error import CompilationError
 from .extended_compiler import ExtendedCompiler
 from .procedural_structures import WhileLoopFlags, IfElseFlags
 
+INVERT_TABLE = {
+    "!=": "==",
+    "==": "!=",
+    "<": ">=",
+    "<=": ">",
+    ">": "<=",
+    ">=": "<",
+}
+
 class ProceduralCompiler:
     """Procedural compiler, provides procedural-programming-like experience.
 if, elif and while can receive 2 arguments at most.
@@ -64,8 +73,8 @@ Keywords:
             top_tagger = self.if_stack[-1]
             next_tag = top_tagger.get_next_branch_tag()
             top_tagger.increase_branch_id()
-            result.append(create_temporary_xlet(condition, verdicts[1:]))
-            result.append(F"jump-if {next_tag} {condition} == false")
+            jump_instructions = get_inverted_jump(condition, next_tag, verdicts)
+            result.extend(jump_instructions)
             return result
         top_tagger = self.if_stack[-1]
         if verdicts[0] in ("elif", "else"):
@@ -76,8 +85,8 @@ Keywords:
             result.append(F"jump-if {final_tag} always")
             result.append(F":{current_tag}")
             if verdicts[0] == "elif":
-                result.append(create_temporary_xlet(condition, verdicts[1:]))
-                result.append(F"jump-if {next_tag} {condition} == false")
+                jump_instructions = get_inverted_jump(condition, next_tag, verdicts)
+                result.extend(jump_instructions)
             return result
         if verdicts[0] == "endif":
             current_tag = top_tagger.get_current_branch_tag()
@@ -124,3 +133,32 @@ Keywords:
 
 def create_temporary_xlet(variable: str, arguments: list) -> str:
     return F"xlet {variable} = " + (" ".join(arguments))
+
+def try_invert_xlet(xlet_instruction: str, target_tag: str) -> str:
+    """Optimize performance for if-elif and while-wend control flows.
+    If operator is invertable (e.g.: <, >, <=, >=, ==, !=), return inverted expression.
+    If it is not invertable, return empty string.
+    Example:
+    "xlet condition = a < b", "tag" -> "jump-if tag a >= b"
+    "xlet condition = a && b", "tag" -> ""
+    """
+    verdicts = xlet_instruction.split()
+    if len(verdicts) == 4:
+        real_condition = verdicts[3]
+        return F"jump-if {target_tag} {real_condition} == false"
+    operator = verdicts[4]
+    if operator in INVERT_TABLE.keys():
+        inverted = INVERT_TABLE[operator]
+        return F"jump-if {target_tag} {verdicts[3]} {inverted} {verdicts[5]}"
+    return ""
+
+def get_inverted_jump(condition:str, jump_tag:str, verdicts: list) -> list:
+    result = []
+    temp_xlet = create_temporary_xlet(condition, verdicts[1:])
+    inverted = try_invert_xlet(temp_xlet, jump_tag)
+    if inverted:
+        result.append(inverted)
+    else:
+        result.append(temp_xlet)
+        result.append(F"jump-if {jump_tag} {condition} == false")
+    return result
