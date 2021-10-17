@@ -107,8 +107,8 @@ Keywords:
             cond_tag = top_tagger.get_condition_tag()
 
             top_tagger.while_looper.append(F":{cond_tag}")
-            top_tagger.while_looper.append(create_temporary_xlet(condition, verdicts[1:]))
-            top_tagger.while_looper.append(F"jump-if {start_tag} {condition} != false")
+            jumps = get_fastest_while_jump(condition, start_tag, verdicts)
+            top_tagger.while_looper.extend(jumps)
             result.append(F"jump-if {cond_tag} always")
             result.append(F":{start_tag}")
             return result
@@ -161,4 +161,17 @@ def get_inverted_jump(condition:str, jump_tag:str, verdicts: list) -> list:
     else:
         result.append(temp_xlet)
         result.append(F"jump-if {jump_tag} {condition} == false")
+    return result
+
+def get_fastest_while_jump(condition:str, jump_tag:str, verdicts: list) -> list:
+    """Verdicts like ["while", "a", "<", "10"] """
+    result = []
+    jumpables = ("===", ) + tuple(INVERT_TABLE.keys())
+    if len(verdicts) == 2:
+        result.append(F"jump-if {jump_tag} {verdicts[1]} != false")
+    elif verdicts[2] in jumpables:
+        result.append(F"jump-if {jump_tag} " + (" ".join(verdicts[1:]) ) )
+    else:
+        result.append(create_temporary_xlet(condition, verdicts[1:]))
+        result.append(F"jump-if {jump_tag} {condition} != false")
     return result

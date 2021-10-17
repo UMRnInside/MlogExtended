@@ -249,6 +249,7 @@ endif
  * Similar restrictions to `xlet`
  * Support `break` and `continue`
  * Cost: 3 vanilla mlog instructions, 1 at the beginning and 2 at the end
+   * or 2 if condition can fit in one `jump-if` instruction
  * **NOTE**: you cannot use `else if` directly, use `elif` instead
  ```
 xlet i = 0
