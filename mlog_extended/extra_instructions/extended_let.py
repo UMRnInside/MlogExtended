@@ -1,7 +1,7 @@
 """Provide xlet instruction, a replacement of `op`, `set`, `sensor` and `getlink`."""
 from .. import CompilationError
 
-# From Mindustry 126.2
+# From Mindustry 134.1
 BINARY_OPERATORS = {
     "+": "add",
     "-": "sub",
@@ -45,6 +45,10 @@ UNARY_ASSIGNERS = {
     "ceil": "ceil",
     "sqrt": "sqrt",
     "rand": "rand",
+    # Version 134
+    "asin": "asin",
+    "acos": "acos",
+    "atan": "atan",
     # Custom assigners
     "~": "not",
     "ln": "log",
