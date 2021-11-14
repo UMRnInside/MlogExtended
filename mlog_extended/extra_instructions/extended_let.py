@@ -115,6 +115,9 @@ def extended_let(src_line: str) -> list:
         elif verdicts[2] == "sensor":
             lvalue, target, attribute = verdicts[1], verdicts[3], verdicts[4]
             line = F"sensor {lvalue} {target} {attribute}"
+        elif verdicts[2] == "lookup":
+            lvalue, category, cat_id = verdicts[1], verdicts[3], verdicts[4]
+            line = F"lookup {category} {lvalue} {cat_id}"
         if len(line) > 0:
             return [line, ]
         message = F"error: unsupported operator '{verdicts[2]}'"
