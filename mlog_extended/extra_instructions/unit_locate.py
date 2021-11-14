@@ -11,6 +11,9 @@ ARG_ALIASES = {
     "resultFound": "found",
     "resultIsFound": "found",
     "resultBuilding": "building",
+    # New, consistent aliases
+    "outFound": "found",
+    "outBuilding": "building",
 }
 
 def unit_locate(src_line: str) -> list:

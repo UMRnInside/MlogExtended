@@ -1,5 +1,12 @@
 # Changelog since v0.0.4
 
+## v0.1.4
+ * `unit-control`: add `out` prefix to output variables
+ * `xlet`: support `lookup`
+
+## v0.1.3
+ * ProceduralCompiler: faster `if` and `while`
+
 ## v0.1.2
  * `xlet`: fix typo in `lessThanEq` and `greaterThanEq`
 

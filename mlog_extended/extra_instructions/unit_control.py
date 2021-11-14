@@ -36,6 +36,8 @@ COMMAND_ARG_ALIASES = {
     "getBlock": {
         "resultType": "type",
         "resultBuilding": "building",
+        "outType": "type",
+        "outBuilding": "building",
     },
 }
 

@@ -72,7 +72,7 @@ Looks like `:Tag1`, `:snake_case`, `:我能吞下玻璃而不伤身体`, etc.
 
 ## `xlet`
  * C-Sytle variable assignment, but very limited.
- * Replaces vanilla `set`, `op`, `sensor` and `getlink` instructions.
+ * Replaces vanilla `set`, `op`, `sensor`, `getlink` and `lookup` instructions.
  * Expression parsing is **NOT** supported.
 
  ```
@@ -93,6 +93,8 @@ Looks like `:Tag1`, `:snake_case`, `:我能吞下玻璃而不伤身体`, etc.
  xlet a5 =floor x
  xlet unitX =sensor @unit @x
  xlet turret =getlink 2
+ xlet something =lookup item 1
+
  # With simple += support
  xlet a += 5
  xlet a //= 2
@@ -120,13 +122,15 @@ Looks like `:Tag1`, `:snake_case`, `:我能吞下玻璃而不伤身体`, etc.
  unit-control itemDrop to=core amount=1
  unit-control itemTake from=core amount=1 item=@copper
  unit-control payDrop
- unit-control payTake takeUnits=myUnit
+ unit-control payTake takeUnits=false
  unit-control mine x=128 y=192
 
  unit-control flag value=10000
  unit-control flag flag=10000
  unit-control getBlock x=1 y=2 type=0 building=resultBuilding
- unit-control getBlock x=1 y=2 resultType=0 resultBuilding=resultBuilding
+ # results starts with `out` prefix
+ unit-control getBlock x=1 y=2 resultType=resultType resultBuilding=resultBuilding
+ unit-control getBlock x=1 y=2 outType=resultType outBuilding=resultBuilding
 
  unit-control within x=1 y=2 radius=3 result=isWithinRadius
  ```
@@ -149,6 +153,7 @@ Looks like `:Tag1`, `:snake_case`, `:我能吞下玻璃而不伤身体`, etc.
  unit-locate type=building group=core isEnemy=false outX=x outY=y found=found building=core
  # Aliases
  unit-locate find=building group=core enemy=false outX=x outY=y found=found building=core
+ unit-locate type=damaged outX=x outY=y outFound=found outBuilding=building
  unit-locate type=spawn resultX=x resultY=y resultIsFound=found building=building
  unit-locate type=damaged outX=x outY=y resultIsFound=found resultBuilding=building
  ```
