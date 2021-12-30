@@ -234,6 +234,7 @@ Looks like `:Tag1`, `:snake_case`, `:我能吞下玻璃而不伤身体`, etc.
 ## `if-elif-else-endif`
  * Supported by procedural compiler
  * Similar restrictions to `xlet`
+ * **NOTE**: you cannot use `else if` directly, use `elif` instead
  * Cost: 
    * 2 for `if`, or 1 if condition is invertable
    * 3 for `elif`, or 2 if condition is invertable
@@ -255,7 +256,6 @@ endif
  * Support `break` and `continue`
  * Cost: 3 vanilla mlog instructions, 1 at the beginning and 2 at the end
    * or 2 if condition can fit in one `jump-if` instruction
- * **NOTE**: you cannot use `else if` directly, use `elif` instead
  ```
 xlet i = 0
 while i < 10
