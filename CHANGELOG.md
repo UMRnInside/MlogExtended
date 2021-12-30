@@ -1,5 +1,10 @@
 # Changelog since v0.0.4
 
+## v0.1.5
+ * ProceduralCompiler: support `do-dowhile`
+ * BasicCompiler: add `compile_with_mappings`
+ * General: report correct line number when "No such mlogex tag" error occurs.
+
 ## v0.1.4
  * `unit-control`: add `out` prefix to output variables
  * `xlet`: support `lookup`
