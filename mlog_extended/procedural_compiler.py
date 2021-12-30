@@ -47,29 +47,31 @@ Keywords:
         self.loop_stack = []
         self.if_stack = []
 
-    def compile_to_backend(self, src_text:str, sep='\n') -> str:
-        dst_lines = []
-        for (line_number, src_line) in enumerate(src_text.splitlines()):
+    def compile_to_backend(self, src_mappings:list, sep='\n') -> str:
+        dst_mappings = []
+        for (line_number, src_line) in src_mappings:
             verdicts = src_line.split()
             if len(verdicts) == 0:
                 continue
             if verdicts[0] in self.if_keywords:
                 try:
-                    dst_lines.extend(self.handle_if(verdicts, str(line_number)))
+                    result = self.handle_if(verdicts, str(line_number))
+                    dst_mappings.extend([(line_number, code) for code in result])
                 except IndexError as exception:
                     message = F"line {line_number+1}: error: "
                     message += F"{verdicts[0]} without if."
                     raise CompilationError(message) from exception
             elif verdicts[0] in self.while_keywords:
                 try:
-                    dst_lines.extend(self.handle_while(verdicts, str(line_number)))
+                    result = self.handle_while(verdicts, str(line_number))
+                    dst_mappings.extend([(line_number, code) for code in result])
                 except IndexError as exception:
                     message = F"line {line_number+1}: error: "
                     message += F"{verdicts[0]} outside of loop."
                     raise CompilationError(message) from exception
             else:
-                dst_lines.append(" ".join(verdicts))
-        return sep.join(dst_lines)
+                dst_mappings.append((line_number, " ".join(verdicts)))
+        return dst_mappings
 
     def handle_if(self, verdicts:list, identifier: str) -> list:
         result = []
@@ -141,8 +143,9 @@ Keywords:
         return result
 
     def compile(self, src_text:str, sep='\n') -> str:
-        extended_source_code = self.compile_to_backend(src_text, sep)
-        return self.backend.compile(extended_source_code, sep)
+        src_mappings = list(enumerate(src_text.splitlines()))
+        extended_mappings = self.compile_to_backend(src_mappings, sep)
+        return self.backend.compile_with_mappings(extended_mappings, sep)
 
 def create_temporary_xlet(variable: str, arguments: list) -> str:
     return F"xlet {variable} = " + (" ".join(arguments))
