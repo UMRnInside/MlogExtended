@@ -31,10 +31,16 @@ Keywords:
     while: starts a while loop.
     endwhile: ends a while loop.
     wend: same as "endwhile"
+
+    do: starts a do-while loop.
+    dowhile: ends a do-while loop.
+
+    break: break while or do-while loop.
+    continue: skip to next loop.
     """
 
     if_keywords = ("if", "elif", "else", "endif")
-    while_keywords = ("while", "wend", "endwhile", "break", "continue")
+    while_keywords = ("while", "wend", "endwhile", "do", "dowhile", "break", "continue")
 
     def __init__(self):
         self.backend = ExtendedCompiler()
@@ -100,25 +106,32 @@ Keywords:
     def handle_while(self, verdicts:list, identifier: str) -> list:
         result = []
         condition = "__mlogex_while_condition"
-        if verdicts[0] == "while":
+        if verdicts[0] in ("while", "do"):
             self.loop_stack.append(WhileLoopFlags(identifier))
             top_tagger = self.loop_stack[-1]
             start_tag = top_tagger.get_loopbody_start_tag()
             cond_tag = top_tagger.get_condition_tag()
-
-            top_tagger.while_looper.append(F":{cond_tag}")
-            jumps = get_fastest_while_jump(condition, start_tag, verdicts)
-            top_tagger.while_looper.extend(jumps)
-            result.append(F"jump-if {cond_tag} always")
+            if verdicts[0] == "while":
+                top_tagger.while_looper.append(F":{cond_tag}")
+                jumps = get_fastest_while_jump(condition, start_tag, verdicts)
+                top_tagger.while_looper.extend(jumps)
+                result.append(F"jump-if {cond_tag} always")
             result.append(F":{start_tag}")
             return result
         top_tagger = self.loop_stack[-1]
+        start_tag = top_tagger.get_loopbody_start_tag()
         cond_tag = top_tagger.get_condition_tag()
         end_tag = top_tagger.get_loopbody_end_tag()
         if verdicts[0] in ("wend", "endwhile"):
             result.extend(top_tagger.while_looper)
             # result.append(F"# {repr(top_tagger.while_looper)}")
             # result.append(F"# {repr(verdicts)}")
+            result.append(F":{end_tag}")
+            self.loop_stack.pop()
+        elif verdicts[0] == "dowhile":
+            jumps = get_fastest_while_jump(condition, start_tag, verdicts)
+            result.append(F":{cond_tag}")
+            result.extend(jumps)
             result.append(F":{end_tag}")
             self.loop_stack.pop()
         elif verdicts[0] == "break":
