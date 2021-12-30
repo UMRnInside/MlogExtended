@@ -270,3 +270,16 @@ while i < 10
 wend
 printflush message1
  ```
+
+## `do-dowhile`
+ * Supported by procedural compiler
+ * Similar to mlogex `while-wend`, but with less cost
+```
+xlet i = 0
+do
+    print i
+    print ", "
+    xlet i += 1
+dowhile i < 10
+printflush message1
+```
