@@ -1,5 +1,5 @@
 # MlogExtended
-Mindustry logic with more instructions. Compiling to vanilla Mindustry logic (vanilla mlog)IS supported. NOT A MOD.
+MlogExtended (or mlogex), Mindustry logic with more instructions. Compiling to vanilla Mindustry logic (vanilla mlog)IS supported. NOT A MOD.
 
 # Features
 * Conditional jump to tags using `xjump` instructions.
